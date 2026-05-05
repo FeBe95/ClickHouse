@@ -160,7 +160,15 @@ public:
 
     void alter(const AlterCommands & params, ContextPtr context, AlterLockHolder & alter_lock_holder) override;
 
+    Pipe alterPartition(
+        const StorageMetadataPtr & /* metadata_snapshot */, const PartitionCommands & /* commands */, ContextPtr /* context */) override;
+
     void checkAlterIsPossible(const AlterCommands & commands, ContextPtr context) const override;
+    void checkAlterPartitionIsPossible(
+        const PartitionCommands & commands,
+        const StorageMetadataPtr & metadata_snapshot,
+        const Settings & settings,
+        ContextPtr context) const override;
 
 protected:
     /// Get path sample for hive partitioning implementation.

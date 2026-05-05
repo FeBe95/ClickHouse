@@ -811,11 +811,25 @@ void StorageObjectStorage::alter(const AlterCommands & params, ContextPtr contex
         ->alterTable(context, storage_id, new_metadata, /*validate_new_create_query=*/true);
     setInMemoryMetadata(new_metadata);
 }
+Pipe StorageObjectStorage::alterPartition(
+    const StorageMetadataPtr & metadata_snapshot, const PartitionCommands & commands, ContextPtr context)
+{
+    return configuration->alterPartition(metadata_snapshot, commands, std::move(context));
+}
+
 
 void StorageObjectStorage::checkAlterIsPossible(const AlterCommands & commands, ContextPtr /*context*/) const
 {
     configuration->checkAlterIsPossible(commands);
 }
 
+void StorageObjectStorage::checkAlterPartitionIsPossible(
+    const PartitionCommands & commands,
+    const StorageMetadataPtr & /*metadata_snapshot*/,
+    const Settings & /*settings*/,
+    ContextPtr /*context*/) const
+{
+    configuration->checkAlterPartitionIsPossible(commands);
+}
 
 }
